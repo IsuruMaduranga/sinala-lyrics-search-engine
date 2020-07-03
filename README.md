@@ -12,13 +12,13 @@ This project contains the source code for REST API based implementation of sinha
 
 1. Start an ElasticSearch Instance on the port 9200
 2. Clone the repository
-3. Install python dependencies using requirements.txt
-    ``` pip3 install -r requirements.txt ``` 
+3. Install python dependencies using requirements.txt <br />
+    * ``` pip3 install -r requirements.txt ``` 
 3. Add your own songs to the songs directory as a list of JSON objects
 4. Add songs to the ELasticSearch instance
-    * python3 populate.py <name_of_songs_file.json>
+    * ```python3 populate.py <name_of_songs_file.json> ```
 4. Run app.py
-    * python3 app.py
+    *  ```python3 app.py ```
 
 ## Querying the REST API
 Send search queries using HTTP POST request to http://localhost:5000/ with JSON payload
