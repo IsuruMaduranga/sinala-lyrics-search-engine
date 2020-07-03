@@ -9,6 +9,10 @@ def read_all_songs():
         return all_songs 
 
 def process(songs):
+    """
+    Pre-processing data
+    """
+
     processed = []
 
     for song in songs:

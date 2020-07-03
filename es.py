@@ -7,6 +7,10 @@ client = Elasticsearch(HOST="http://localhost",PORT=9200)
 INDEX = 'songs'
 
 def isSinhala(search_str):
+    """
+    Identifies a given string is Sinhala or English
+    """
+
     try:
         search_str.encode(encoding='utf-8').decode('ascii')
     except UnicodeDecodeError:
@@ -14,7 +18,11 @@ def isSinhala(search_str):
     else:
         return False
 
+
 def get_all_lists():
+    """
+    Get all the names of artists,musicians,melodists and lyricists from ElasticSearch instance
+    """
 
     query = queries.all_lists()
     r = client.search(index=INDEX, body=query)["aggregations"]
@@ -39,12 +47,17 @@ def get_all_lists():
 
 
 def query_boosting(search_str):
+    """
+    Query boosting algorithm
+    """
 
+    #Initializing weights
     weights = {"title_si":0,"title_en":0,"artist_si":0,"artist_en":0,"music_si":0,"melody_si":0,"lyricist_si":0, "lyrics":0}
 
     sinhala = isSinhala(search_str)
     num_words = len(search_str.split(" "))
 
+    ####### The algorithm ########
     if( not sinhala ):
 
         weights["artist_en"] = 1
@@ -104,7 +117,7 @@ def query_boosting(search_str):
     elif (num_words  >= 5 ):
         weights["lyrics"] = 3
 
-
+    # Query attributes building based on weights of each field
     title_si ="title_si^{}".format(weights["title_si"])
     title_en ="title_en^{}".format(weights["title_en"])
     artist_si ="artist_si^{}".format(weights["artist_si"])
@@ -119,9 +132,11 @@ def query_boosting(search_str):
 
 def query(search_str,filters = None,req_filters=0):
 
+    # Tokenizing
     words = search_str.split(" ")
     best_syn = ['හොඳම','ප්‍රසිද්ධම','හොදම','ජනප්‍රියම', 'best', 'top', 'popular']
 
+    # Identifing range queries
     n = None
     new_search_str = ""
     for word in words:
@@ -134,8 +149,11 @@ def query(search_str,filters = None,req_filters=0):
             new_search_str += " "
 
     new_search_str = new_search_str.strip()
+
+    # Running the query boosting algorithm
     opt = query_boosting(new_search_str)
 
+    # Building the right query based on the attributes and boosted paramaters
     if( not n):
         if(filters):
             query = queries.multi_match_filtered(search_str, filters,fields=opt)
@@ -146,6 +164,7 @@ def query(search_str,filters = None,req_filters=0):
     else:
         query = queries.multi_match_best(new_search_str,n)
 
+    # Executing the query
     r = client.search(index=INDEX, body=query)
 
     return r

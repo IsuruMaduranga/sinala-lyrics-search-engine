@@ -7,8 +7,11 @@ INDEX = 'songs'
 
 def createIndex():
     index = Index(INDEX,using=client)
-    res = index.create()
-    print (res)
+    index.create()
+
+def deleteIndex(index_name):
+    es = Elasticsearch()
+    es.indices.delete(index=index_name, ignore=[400, 404])
 
 def read_all_songs():
     with open('songs/processed_songs.json','r') as f:
@@ -17,6 +20,10 @@ def read_all_songs():
 
 
 def genData(song_array):
+    """
+    Preprocessing data before uploading to the ElasticSearch Instance
+    """
+
     for song in song_array:
 
         title_si = song.get("title_si",None)
@@ -47,8 +54,7 @@ def genData(song_array):
 
 if __name__ == "__main__":
 
-    # es = Elasticsearch()
-    # es.indices.delete(index='songs', ignore=[400, 404])
+    #deleteIndex('songs')
 
     createIndex()
     all_songs = read_all_songs()

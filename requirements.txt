@@ -1,0 +1,6 @@
+elasticsearch
+mtranslate
+strsimpy
+flask
+bs4
+unicodecsv
