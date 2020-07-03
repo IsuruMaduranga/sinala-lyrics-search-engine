@@ -73,8 +73,6 @@ The major capabilites of the engine are listed below.
     * Ex: නොමග නොයන් පුතේ විල්බට් ඇන්තනි, Nomaga noyan puthe obata ratak athe Wilbert Anthony
 * Query boosting - Queries are boosted intelligently to increase the search accuracy
 
-## Query boosting and optimization
-
-
+## Query boosting and optimization algorithm
 
 ![Query boosting and optimization](algo.png)
