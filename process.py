@@ -33,8 +33,6 @@ def process(songs):
 
         new["lyrics"] = song["lyrics"].strip('\n')
 
-        print(new["lyrics"])
-
         new["views"] = random.randint(100,10000)
 
         processed.append(new)

@@ -114,8 +114,6 @@ def query_boosting(search_str):
     lyricist_si ="lyricist_si^{}".format(weights["lyricist_si"])
     lyrics ="lyrics^{}".format(weights["lyrics"])
 
-    print(weights)
-
     return [title_si,title_en,artist_si,artist_en,music_si,melody_si,lyricist_si,lyrics]
 
 
